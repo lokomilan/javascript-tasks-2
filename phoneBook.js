@@ -12,20 +12,27 @@ function getSearchString(record) {
     return searchString.substring(2);
 }
 
-function markProperRecords(query) {
-    var properRecordsPositions = [];
-    if (query == null) {
-        return properRecordsPositions;
+function markrecords() {
+	var recordsPositions = [];
+	for (var i = 0; i < phoneBook.length; i++)
+		recordsPositions.push(i);
+	return recordsPositions;
+}
+
+function markRecords(query) {
+    var recordsPositions = [];
+    if (!String(query)) {
+        return recordsPositions;
     }
     for (var i = 0; i < phoneBook.length; i++) {
         var currentRecord = phoneBook[i];
         var searchString = getSearchString(currentRecord);
         var queryRegExp = new RegExp(query, 'i');
         if (queryRegExp.test(searchString)) {
-            properRecordsPositions.push(i);
+            recordsPositions.push(i);
         }
     }
-    return properRecordsPositions;
+    return recordsPositions;
 }
 
 var emailRegExp = /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-zа-яё0-9_-]+(\.[a-zа-яё0-9_-]+)*\.[a-za-яё]+$/i;
@@ -43,7 +50,7 @@ module.exports.add = function add(name, phone, email) {
 };
 
 module.exports.find = function find(query) {
-    var positions = markProperRecords(query);
+    var positions = markRecords(query);
     for (var i = 0; i < positions.length; i++) {
         var currentRecord = phoneBook[positions[i]];
         var recordString = getSearchString(currentRecord);
@@ -52,7 +59,7 @@ module.exports.find = function find(query) {
 };
 
 module.exports.remove = function remove(query) {
-    var positions = markProperRecords(query);
+    var positions = markRecords(query);
     for (var i = positions.length - 1; i >= 0; i--) {
         phoneBook.splice(positions[i], 1);
     }
